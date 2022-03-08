@@ -12,6 +12,19 @@ app.use(express.json());
 
 function checksExistsUserAccount(request, response, next) {
   // Complete aqui
+  const { username } = request.headers;
+
+  const userAccountAlreadyExists = users.some((user) => username == user.username);
+
+  if (!userAccountAlreadyExists) {
+    return response.status(400).json({error: "Account doesnt exists"});
+  }
+
+  return next();
+}
+
+function getUserIndex(username) {
+  return users.findIndex((user) => user.username == username);
 }
 
 app.post('/users', (request, response) => {
