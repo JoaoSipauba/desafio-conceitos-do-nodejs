@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 
-// const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// const users = [];
+const users = [];
 
 function checksExistsUserAccount(request, response, next) {
   // Complete aqui
@@ -45,6 +45,12 @@ app.post('/users', (request, response) => {
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
   // Complete aqui
+  const { username } = request.headers;
+
+  const userIndex = getUserIndex(username);
+  const userTodoList = users[userIndex].todos;
+
+  return response.status(200).json(userTodoList);
 });
 
 app.post('/todos', checksExistsUserAccount, (request, response) => {
