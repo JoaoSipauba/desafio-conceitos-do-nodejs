@@ -27,9 +27,21 @@ function getUserIndex(username) {
   return users.findIndex((user) => user.username == username);
 }
 
+function getTodoIndex(userIndex, todoId) {
+  const todoIndex = users[userIndex].todos.findIndex((todo) => todo.id == todoId);
+
+  return todoIndex;
+}
+
 app.post('/users', (request, response) => {
   // Complete aqui
   const { name, username } = request.body;
+
+  const userAccountAlreadyExists = users.some((user) => username == user.username);
+
+  if (userAccountAlreadyExists) {
+    return response.status(400).json({error: "Account already exists"});
+  }
 
   const user = {
     id: uuidv4(),
